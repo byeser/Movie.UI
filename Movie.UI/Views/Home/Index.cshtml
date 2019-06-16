@@ -3,22 +3,52 @@
     ViewBag.Title = "Home Page";
 }
 
-@*<div class="jumbotron">*@
-<form action="/Home/Index" method="post" >
-    <div class="col-md-11">
-        <div class="form-group">
+
+<form action="/Home/Index" method="post" style="padding:5%;">
+
+    <div class="row">
+        <div class="col-xs-12 col-sm-12 col-md-11 col-lg-11">
+
             <input class="form-control" name="name" type="text">
             @*<input type="text" name="name" class="form-control" placeholder="Film Ara" />*@
+
+        </div>
+        <div class="col-xs-12 col-sm-12 col-md-1 col-lg-1"> 
+            <input type="submit" class="form-control" value="ARA" />
         </div>
     </div>
-    <div class="col-md-1"> <input type="submit" class="form-control" value="ARA" /></div>
-
 </form>
-@*</div>*@
+
 <hr />
 
 <div class="row">
-    @if (Model != null)
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">ImdbID</th>
+                <th scope="col">Title</th>
+                <th scope="col">Year</th>
+                <th scope="col">Type</th>
+                <th scope="col">Poster</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model != null)
+            {
+                foreach (var item in Model)
+                {
+                    <tr>
+                        <td> @item.imdbID</td>
+                        <td>@item.title</td>
+                        <td>@item.year</td>
+                        <td>@item.type</td>
+                        <td ><img src="@item.poster" style="height:50px;width:40px" /></td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+    @*@if (Model != null)
     {
         foreach (var item in Model)
         {
@@ -33,21 +63,19 @@
                 </p>
             </div>
         }
-    }
+    }*@
 </div>
 <script>
     dataUpdate();
-    function dataUpdate()
-    {
+    function dataUpdate() {
         setInterval(getDataRefresh, 600000);
     }
-    function getDataRefresh()
-    {
+    function getDataRefresh() {
         $.ajax({
             url: '/Home/UpdateData/',
             dataType: "json",
             type: "GET",
-            success: function (data) {                
+            success: function (data) {
             }
         });
     }
