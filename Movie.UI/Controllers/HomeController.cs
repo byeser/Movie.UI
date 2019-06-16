@@ -61,7 +61,7 @@ namespace Movie.UI.Controllers
                 if (response.IsSuccessStatusCode)
                 {
                     var content = response.Content.ReadAsStringAsync();
-                    if(content.Result==null)
+                    if (content.Result == null)
                         return View(list);
                     var result = JsonConvert.DeserializeObject<dynamic>(content.Result).ToString();
                     string k = result.Replace("{\r\n  \"films\":", "").Replace("\r\n}", "");
@@ -73,11 +73,24 @@ namespace Movie.UI.Controllers
             return View(list);
         }
 
-        public ActionResult Contact()
+        public JsonResult UpdateData()
         {
-            ViewBag.Message = "Your contact page.";
-
-            return View();
+            IEnumerable<Film> list = null;
+            System.Net.ServicePointManager.ServerCertificateValidationCallback +=
+                                                                               (se, cert, chain, sslerror) =>
+                                                                               {
+                                                                                   return true;
+                                                                               };
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri("https://localhost:5001/");
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                HttpResponseMessage response;
+                response = client.GetAsync("api/Films/Put").Result;
+                response.EnsureSuccessStatusCode();
+                return Json(response.EnsureSuccessStatusCode(),JsonRequestBehavior.AllowGet);
+            }
+           
         }
     }
 }
