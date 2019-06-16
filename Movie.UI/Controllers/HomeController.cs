@@ -31,11 +31,13 @@ namespace Movie.UI.Controllers
                 if (response.IsSuccessStatusCode)
                 {
                     var content = response.Content.ReadAsStringAsync();
-                    var result = JsonConvert.DeserializeObject<dynamic>(content.Result).ToString();
-                    string k = result.Replace("{\r\n  \"films\":", "").Replace("\r\n}", "");
-                    list = JsonConvert.DeserializeObject<IEnumerable<Film>>(k);
-                    return View(list);
-
+                    if (content.Result != null)
+                    {
+                        var result = JsonConvert.DeserializeObject<dynamic>(content.Result).ToString();
+                        string k = result.Replace("{\r\n  \"films\":", "").Replace("\r\n}", "");
+                        list = JsonConvert.DeserializeObject<IEnumerable<Film>>(k);
+                        return View(list);
+                    }
                 }
             }
             return View(list);

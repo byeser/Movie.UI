@@ -48,22 +48,7 @@
             }
         </tbody>
     </table>
-    @*@if (Model != null)
-    {
-        foreach (var item in Model)
-        {
-
-            <div class="col-lg-2">
-                <h5>@item.title</h5>
-                <img src="@item.poster" />
-                <p>
-                    @item.year <br />
-                    @item.imdbID <br />
-                    @item.type
-                </p>
-            </div>
-        }
-    }*@
+   
 </div>
 <script>
     dataUpdate();
